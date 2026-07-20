@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: mention-notification-service
+
+  datasource:
+    url: jdbc:oracle:thin:@asirialwis?TNS_ADMIN=/home/asiri/wallet
+    username: ${DB_USERNAME:ADMIN}
+    password: ${DB_PASSWORD:asirialwis@Test@123}
+    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      connection-test-query: SELECT 1 FROM DUAL
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.OracleDialect
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+  task:
+    execution:
+      pool:
+        core-size: 5
+        max-size: 10
+        queue-capacity: 25
