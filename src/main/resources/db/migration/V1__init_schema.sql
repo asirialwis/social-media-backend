@@ -6,7 +6,7 @@ CREATE TABLE users (
                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
-CREATE INDEX idx_users_username ON users(username);
+-- CREATE INDEX idx_users_username ON users(username);
 
 -- Comments Table
 CREATE TABLE comments (
