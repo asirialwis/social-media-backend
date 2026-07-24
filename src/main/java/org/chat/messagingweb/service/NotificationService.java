@@ -1,6 +1,6 @@
 package org.chat.messagingweb.service;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.chat.messagingweb.domain.entity.entity.Notification;
@@ -60,6 +60,28 @@ public class NotificationService {
             );
             log.info("Successfully pushed notification to user: {}", recipient.getUsername());
         }
+    }
+
+    @Transactional(readOnly = true)
+    public List<NotificationResponse> getUnreadNotifications(Long recipientId) {
+        return notificationRepository.findByRecipientIdAndIsReadFalseOrderByCreatedAtDesc(recipientId)
+                .stream()
+                .map(NotificationResponse::fromEntity)
+                .toList();
+    }
+
+
+    @Transactional
+    public void markAsRead(Long notificationId, Long recipientId) {
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(() -> new IllegalArgumentException("Notification not found with ID: " + notificationId));
+
+        if (!notification.getRecipient().getId().equals(recipientId)) {
+            throw new IllegalStateException("User is not authorized to modify this notification");
+        }
+
+        notification.setIsRead(true);
+        notificationRepository.save(notification);
     }
 
 }
