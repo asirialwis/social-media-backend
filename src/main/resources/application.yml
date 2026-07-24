@@ -33,3 +33,12 @@ spring:
         core-size: 5
         max-size: 10
         queue-capacity: 25
+
+  springdoc:
+    api-docs:
+      path: /v3/api-docs
+    swagger-ui:
+      path: /swagger-ui.html
+      tags-sorter: alpha
+      operations-sorter: method
+      doc-expansion: none # Keep endpoints collapsed by default for better UX

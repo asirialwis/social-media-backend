@@ -2,6 +2,7 @@ package org.chat.messagingweb.controller;
 
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.chat.messagingweb.controller.api.NotificationApi;
 import org.chat.messagingweb.dto.response.NotificationResponse;
 import org.chat.messagingweb.service.NotificationService;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/notifications")
 @RequiredArgsConstructor
-public class NotificationController {
+public class NotificationController implements NotificationApi {
     private final NotificationService notificationService;
 
     @GetMapping("/unread")

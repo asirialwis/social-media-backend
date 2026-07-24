@@ -2,6 +2,7 @@ package org.chat.messagingweb.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.chat.messagingweb.controller.api.CommentApi;
 import org.chat.messagingweb.domain.entity.entity.Comment;
 import org.chat.messagingweb.dto.request.CreateCommentRequest;
 import org.chat.messagingweb.service.CommentService;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/comments")
 @RequiredArgsConstructor
-public class CommentController {
+public class CommentController implements CommentApi {
 
     private final CommentService commentService;
     @PostMapping

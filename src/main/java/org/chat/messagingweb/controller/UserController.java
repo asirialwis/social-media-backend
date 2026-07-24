@@ -1,6 +1,7 @@
 package org.chat.messagingweb.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.chat.messagingweb.controller.api.UserApi;
 import org.chat.messagingweb.dto.response.UserMentionResponse;
 import org.chat.messagingweb.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
-public class UserController {
+public class UserController implements UserApi {
 
     private final UserRepository userRepository;
 
