@@ -1,0 +1,30 @@
+services:
+  mention-notification-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mention-notification-service
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      # Active Spring Profile for production settings
+      - SPRING_PROFILES_ACTIVE=prod
+
+      # Spring Boot maps these automatically to spring.datasource.*
+      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@asirialwis_high?TNS_ADMIN=/app/oracle/wallet
+      - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+
+      # Hibernate production settings
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=validate
+      - SPRING_JPA_SHOW_SQL=false
+    volumes:
+      # Mount local host Oracle Wallet into the container's wallet path
+      - ${ORACLE_WALLET_PATH:-/home/asiri/Documents/Oracle/Wallet_asirialwis}:/app/oracle/wallet:ro
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
