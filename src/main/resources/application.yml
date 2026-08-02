@@ -35,6 +35,25 @@ spring:
         max-size: 10
         queue-capacity: 25
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.0
+    container_name: keycloak
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    ports:
+      - "8081:8080" # Mapped to 8081 so it doesn't conflict with Spring Boot on 8080
+    command: start-dev # Runs Keycloak in development mode (no HTTPS required)
+    networks:
+      - app-network
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Points to the 'messaging-realm' will create in Keycloak
+          issuer-uri: http://localhost:8081/realms/messaging-realm
+
   springdoc:
     api-docs:
       path: /v3/api-docs

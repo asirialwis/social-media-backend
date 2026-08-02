@@ -10,6 +10,8 @@ import org.chat.messagingweb.repository.CommentRepository;
 import org.chat.messagingweb.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CommentService {
@@ -18,9 +20,13 @@ public class CommentService {
     private final NotificationService notificationService;
 
     @Transactional
-    public Comment createComment(Long authorId, CreateCommentRequest request) {
-        User author = userRepository.findById(authorId)
-                .orElseThrow(() -> new ResourceNotFoundException("Author not found with ID: " + authorId));
+    public Comment createComment(String keycloakUserIdStr,String username , String email, CreateCommentRequest request) {
+        User author = userRepository.findByKeycloakId(keycloakUserIdStr)
+                .orElseGet(() -> userRepository.save(User.builder()
+                        .keycloakId(keycloakUserIdStr)
+                        .username(username != null ? username : keycloakUserIdStr)
+                        .email(email != null ? email : keycloakUserIdStr + "@noemail.com")
+                        .build()));
 
         Comment comment = Comment.builder()
                 .content(request.content())

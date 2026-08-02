@@ -13,6 +13,8 @@ import jakarta.validation.Valid;
 import org.chat.messagingweb.dto.request.CreateCommentRequest;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -41,11 +43,11 @@ public interface CommentApi {
                     content = @Content(schema = @Schema(implementation = ProblemDetail.class))
             )
     })
+
+
     @PostMapping
     ResponseEntity<Long> createComment(
-            @Parameter(in = ParameterIn.HEADER, name = "X-User-Id", required = true, example = "1")
-            @RequestHeader("X-User-Id") Long authorId,
-
+            @AuthenticationPrincipal Jwt jwt,
             @Valid @RequestBody CreateCommentRequest request
     );
 }

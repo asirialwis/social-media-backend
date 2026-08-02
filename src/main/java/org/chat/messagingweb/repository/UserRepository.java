@@ -6,10 +6,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     // For autocomplete search in frontend mention input (@term)
 
     @Query("SELECT u FROM User u WHERE LOWER(u.username) LIKE LOWER(CONCAT(:query, '%'))")
     List<User> searchForMention(@Param("query") String query);
+
+    Optional<User> findByKeycloakId(String keycloakId);
 }

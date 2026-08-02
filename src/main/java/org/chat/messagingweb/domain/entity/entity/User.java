@@ -15,6 +15,10 @@ import org.chat.messagingweb.domain.common.BaseEntity;
 @Builder
 public class User extends BaseEntity {
 
+    // Store Keycloak's UUID ('sub' claim) here
+    @Column(name = "keycloak_id", nullable = false, unique = true, length = 36)
+    private String keycloakId;
+
     @Column(nullable = false , unique = true , length = 50)
     private String username;
 
